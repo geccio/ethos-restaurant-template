@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0b0c;
+  --background-elevated: #141416;
+  --foreground: #f5f1ea;
+  --foreground-muted: #b8b1a4;
+  --border: #2a2722;
+  --accent: #c9a368;
+  --accent-dim: #8b7444;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-cormorant);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  background: var(--background);
+  color: var(--foreground);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle film grain over the hero — purely decorative */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+}
