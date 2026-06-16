@@ -1,0 +1,77 @@
+# CODEOWNERS for ethos-restaurant-template
+#
+# Operating agreement §5 (docs/external-site/operating-agreement.md in
+# the geccio/ETHOS repo): the template lives here, day-to-day
+# maintenance is owned by the external-site agent, but any change that
+# touches the Ethos-side API client surface or the pinned contract
+# version requires review by the Ethos backend owner. CODEOWNERS is
+# the mechanical enforcement of that rule — GitHub auto-requests
+# review when a PR touches any path below.
+#
+# When @geccio sets up an org/team, replace @geccio with the team
+# handle to spread the review load.
+
+# ── Wire-level integration surfaces ───────────────────────────────
+# Any of these is part of the wire contract. Changing them without
+# coordinated Ethos backend review risks silently breaking deployed
+# restaurant sites.
+
+/app/api/reserve/route.ts     @geccio
+/app/api/takeout/route.ts     @geccio
+/app/api/track/route.ts       @geccio
+
+# ── Shared utilities that frame the integration ───────────────────
+# The single greppable wrapper for every /api/public/* call. Operating
+# agreement §5: "Define 'API client surface' per-repo — your
+# lib/ethos-server.ts lives in your repo."
+
+/lib/ethos-server.ts          @geccio
+
+# Caching, slot computation, currency formatting, analytics proxy —
+# their shape is referenced from the build contract and downstream
+# components.
+
+/lib/site-info.ts             @geccio
+/lib/reservation-slots.ts     @geccio
+/lib/currency.ts              @geccio
+/lib/track.ts                 @geccio
+/lib/whatsapp.ts              @geccio
+
+# ── Mandatory contract-pinned files ───────────────────────────────
+# Build contract §9 (WhatsApp confirm anchor) — the pattern lives in
+# these two components. Changing the pattern (e.g. back to
+# window.open) breaks compliance.
+
+/app/components/ReservationForm.tsx   @geccio
+/app/components/CartPanel.tsx         @geccio
+
+# Build contract §8 — fires the mandatory page_view event on every
+# route change. Removing or breaking this drops the dashboard's
+# analytics surface.
+
+/app/components/AnalyticsTracker.tsx  @geccio
+
+# generateMetadata pulls title/description/og:image from
+# /api/public/site-info per build contract §10. Layout's async fetch
+# is also load-bearing for the site-info cache pattern.
+
+/app/layout.tsx               @geccio
+
+# ── Contract pin + agent rules ────────────────────────────────────
+# AGENTS.md carries the pinned CONTRACT_VERSION the template targets.
+# Bumping the pin = asserting compatibility with a newer contract;
+# Ethos owner reviews to confirm.
+
+/AGENTS.md                    @geccio
+/CLAUDE.md                    @geccio
+
+# Owner handoff doc — phrased to match the build contract §15
+# requirements. Edits here can drift from the contract; review keeps
+# them aligned.
+
+/HANDOFF.md                   @geccio
+
+# ── Workflow file safety ──────────────────────────────────────────
+# Any future GitHub Actions that run secrets or open PRs.
+
+/.github/                     @geccio
